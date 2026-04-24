@@ -1,4 +1,4 @@
-const API_URL = "https://expense-tracker-5lur.onrender.com";
+const API_URL = "https://expense-tracker-5lur.onrender.com/api"; // Added /api here
 const token = localStorage.getItem('token');
 let expenseChart;
 
@@ -20,7 +20,10 @@ async function fetchExpenses() {
         const pendingItems = data.filter(i => i.status === 'Pending');
 
         const total = spentItems.reduce((sum, exp) => sum + parseFloat(exp.amount), 0);
-        document.getElementById('total-balance').innerText = `₹${total.toLocaleString('en-IN')}`;
+        const balanceElement = document.getElementById('total-balance');
+        if (balanceElement) {
+            balanceElement.innerText = `₹${total.toLocaleString('en-IN')}`;
+        }
 
         const chartLabels = spentItems.map(item => item.description);
         const chartData = spentItems.map(item => parseFloat(item.amount));
@@ -50,13 +53,14 @@ async function fetchExpenses() {
 
     } catch (err) {
         console.error("Dashboard Sync Error:", err);
-        alert("Cannot connect to server. Please wait a few seconds and try again.");
     }
 }
 
 // 3. Charting Logic
 function updateChart(labels, data) {
-    const ctx = document.getElementById('expenseChart').getContext('2d');
+    const chartCanvas = document.getElementById('expenseChart');
+    if (!chartCanvas) return;
+    const ctx = chartCanvas.getContext('2d');
     if (expenseChart) expenseChart.destroy();
 
     expenseChart = new Chart(ctx, {
@@ -79,43 +83,46 @@ function updateChart(labels, data) {
 }
 
 // 4. Add Expense
-document.getElementById('expense-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
+const expenseForm = document.getElementById('expense-form');
+if (expenseForm) {
+    expenseForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-    const description = document.getElementById('desc').value;
-    const amount = document.getElementById('amount').value;
-    const category = "General";
-    const status = document.querySelector('input[name="status"]:checked').value;
+        const description = document.getElementById('desc').value;
+        const amount = document.getElementById('amount').value;
+        const category = "General";
+        const status = document.querySelector('input[name="status"]:checked').value;
 
-    try {
-        const response = await fetch(`${API_URL}/expenses`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({ description, amount, category, status })
-        });
+        try {
+            const response = await fetch(`${API_URL}/expenses`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ description, amount, category, status })
+            });
 
-        if (response.ok) {
-            e.target.reset();
-            fetchExpenses();
-        } else {
-            alert("Error adding entry. Session expired.");
+            if (response.ok) {
+                e.target.reset();
+                fetchExpenses();
+            } else {
+                alert("Error adding entry.");
+            }
+        } catch (error) {
+            console.error("Server Connection Error:", error);
         }
-    } catch (error) {
-        console.error("Server Connection Error:", error);
-    }
-});
+    });
+}
 
 // 5. Delete Expense
 async function deleteExpense(id) {
     if (!confirm("Are you sure you want to delete this log?")) return;
-
-    const res = await fetch(`${API_URL}/api/expenses/${id}`, {
-    method: 'DELETE',
-    headers: { 'Authorization': `Bearer ${token}` }
-});
+    try {
+        const res = await fetch(`${API_URL}/expenses/${id}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
 
         if (res.ok) {
             fetchExpenses();
