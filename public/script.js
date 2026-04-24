@@ -112,11 +112,10 @@ document.getElementById('expense-form').addEventListener('submit', async (e) => 
 async function deleteExpense(id) {
     if (!confirm("Are you sure you want to delete this log?")) return;
 
-    try {
-        const res = await fetch(`${API_URL}/expenses/${id}`, {
-            method: 'DELETE',
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
+    const res = await fetch(`${API_URL}/api/expenses/${id}`, {
+    method: 'DELETE',
+    headers: { 'Authorization': `Bearer ${token}` }
+});
 
         if (res.ok) {
             fetchExpenses();
