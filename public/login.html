@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <link rel="stylesheet" href="login.css" />
+  <title>Login Page</title>
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/5402/5402751.png" />
+</head>
+
+<body>
+  <div class="container" id="container">
+
+    <div class="form-container sign-up">
+      <form id="signupForm">
+        <h1>Create Account</h1>
+        <div class="social-icons">
+          <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
+          <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
+          <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
+        </div>
+        <span>or use your email for registration</span>
+        <input type="text" id="signupUsername" placeholder="Name" required />
+        <input type="email" id="signupEmail" placeholder="Email" required />
+        
+        <!-- SIGN UP PASSWORD WITH EYE ICON -->
+        <div style="position: relative; width: 100%; margin: 8px 0;">
+          <input type="password" id="signupPassword" placeholder="Password" required style="padding-right: 45px; width: 100%;" />
+          <i class="fas fa-eye" 
+             onclick="togglePassword('signupPassword', this)"
+             style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #d8556b; font-size: 16px; z-index: 2;"></i>
+        </div>
+        
+        <button type="submit">Sign Up</button>
+      </form>
+    </div>
+
+    <div class="form-container sign-in">
+      <form id="loginForm">
+        <h1>Sign In</h1>
+        <div class="social-icons">
+          <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
+          <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
+          <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
+        </div>
+        <span>or use your email password</span>
+        <input type="email" id="loginEmail" placeholder="Email" required />
+        
+        <!-- LOGIN PASSWORD WITH EYE ICON -->
+        <div style="position: relative; width: 100%; margin: 8px 0;">
+          <input type="password" id="loginPassword" placeholder="Password" required style="padding-right: 45px; width: 100%;" />
+          <i class="fas fa-eye" 
+             onclick="togglePassword('loginPassword', this)"
+             style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #d8556b; font-size: 16px; z-index: 2;"></i>
+        </div>
+        
+        <a href="forgotpassword.html" >Forgot password?</a>
+        <button type="submit">Sign In</button>
+      </form>
+    </div>
+
+    <div class="toggle-container">
+      <div class="toggle">
+        <div class="toggle-panel toggle-left">
+          <h1>Welcome Back!</h1>
+          <p>Enter your personal details to use all of site features</p>
+          <button id="login">Sign In</button>
+        </div>
+        <div class="toggle-panel toggle-right">
+          <h1>Hello, Friend!</h1>
+          <p>Register with your personal details to use all of site features</p>
+          <button id="register">Sign Up</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="login.js"></script>
+  <script>
+    // Add this function at the bottom of the file
+    function togglePassword(inputId, icon) {
+      const passwordInput = document.getElementById(inputId);
+      
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+      } else {
+        passwordInput.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+      }
+    }
+  </script>
+</body>
+</html>

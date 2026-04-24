@@ -1,0 +1,11 @@
+# Ignore the secret keys for Supabase/Database
+server/.env
+.env
+
+# Ignore the heavy library folders (they get reinstalled later)
+node_modules/
+server/node_modules/
+
+# Ignore system files
+.DS_Store
+Thumbs.db
